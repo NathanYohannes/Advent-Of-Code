@@ -60,4 +60,3 @@ int main()
     cout<<"Score for Part 2: "<<score2<<"\n";
     return 0;
 }
-//9+7+7+9+6
