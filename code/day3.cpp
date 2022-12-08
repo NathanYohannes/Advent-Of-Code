@@ -10,58 +10,59 @@ map<char,int>valueMap;
 int main(){
 
     string leftSub,rightSub,str;
-    int sum, it = 0;
+    int sum = 0;
     int midpoint;
+
+    for(int i=0; i<26;i++) //Initialize the Value Pairing Map
+        valueMap.insert(pair<char,int>('a'+i,i+1));
+    for(int i=0;i<26;i++)
+        valueMap.insert(pair<char,int>('A'+i,i+27));
+    
+    std::cout<<valueMap['A']<<endl;
 
     ifstream file("../puzzleInput/day3.txt");
     
     while(getline(file, str)){
-        map <char,int> occuranceMap;
+        map <char,int> occuranceMap; //create a fresh occuranceMap for each line
+
         midpoint = str.length()/2;
-        cout<<str.length()<<endl;
-        cout<<floor(midpoint)<<endl;
         
         leftSub = str.substr(0,midpoint);
-        
-        for(int i=0;i<leftSub.length();i++){
-            if(occuranceMap.find(leftSub[i]) == occuranceMap.end()){
-                occuranceMap.insert({leftSub[i],0}); //not found then insert
-            }
-            else{
-                continue; //we only want to know if the character exists in the left substring, ignore multiple occurances 
-            }
-        
-        }
-        cout<<"made it"<<endl;
-        for(int i=0; i<occuranceMap.size();i++){
-            if(occuranceMap[i]>1){
-                cout<<occuranceMap.at(i)<<endl;
-                //sum+=occuranceMap[i];
-            }
-        }
 
-        rightSub = str.substr(midpoint,str.length()/2);
-        cout<<rightSub<<endl;
-        for(int i=0;rightSub.length();i++){
-            if(occuranceMap.find(rightSub[i]) == occuranceMap.end()){
+        for (const char &c: leftSub){
+            // check if key `c` exists in the map or not
+            std::map<char, int>::iterator it = occuranceMap.find(c);
+    
+            // key already present on the map
+            if (it != occuranceMap.end()) {
                 continue;
+                //it->second++;    // increment map's value for key `c`
             }
-            else{
-                occuranceMap[i] = occuranceMap[i]++;
-            }
-            //cout<<"uhh"<<endl;
-        }
-
-        for(int i=0; i<occuranceMap.size();i++){
-            if(occuranceMap[i]>1){
-                sum+=occuranceMap[i];
+            // key not found
+            else {
+                occuranceMap.insert(std::make_pair(c, 1));
             }
         }
-        cout<<it<<endl;
-        it++;
 
+        rightSub = str.substr(midpoint,str.length()/2); 
+        for (const char &c: rightSub){
+            std::map<char, int>::iterator it = occuranceMap.find(c);
+
+            // key already present on the map
+            if (it != occuranceMap.end()) {
+                it->second++;    // increment map's value for key `c`
+            }
+            //if key is not present in map continue
+        }
+        
+        for(map<char ,int>::const_iterator it=occuranceMap.begin();it !=occuranceMap.end();++it){
+            if(it->second>1){
+                sum+=valueMap.at(it->first);
+            }
+        }
+            
     }
-    cout<<sum<<endl;
-
+    cout<<"sum: "<<sum<<endl;
+    
     return 0;
 }
