@@ -18,8 +18,6 @@ int main(){
     for(int i=0;i<26;i++)
         valueMap.insert(pair<char,int>('A'+i,i+27));
     
-    std::cout<<valueMap['A']<<endl;
-
     ifstream file("../puzzleInput/day3.txt");
     
     while(getline(file, str)){
