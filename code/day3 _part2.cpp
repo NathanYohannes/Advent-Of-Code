@@ -10,7 +10,7 @@ map<char,int>valueMap;
 int main(){
 
     string leftSub,rightSub,str;
-    int sum = 0;
+    int sum,it = 0;
     int midpoint;
 
     for(int i=0; i<26;i++) //Initialize the Value Pairing Map
@@ -22,6 +22,9 @@ int main(){
     
     while(getline(file, str)){
         map <char,int> occuranceMap; //create a fresh occuranceMap for each line
+        if(it%3 == 0){
+            occuranceMap.clear();
+        }
 
         midpoint = str.length()/2;
 
@@ -54,7 +57,7 @@ int main(){
                 sum+=valueMap.at(it->first); //add it's corresponding value to the sum
             }
         }
-            
+        it++;
     }
     cout<<"sum: "<<sum<<endl;
     
